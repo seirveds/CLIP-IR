@@ -1,2 +1,6 @@
-open-clip-torch==2.20.0
-vectordb==0.0.18
+open-clip-torch
+vectordb
+matplotlib
+numpy
+tqdm
+scikit-learn

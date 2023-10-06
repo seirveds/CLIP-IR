@@ -61,8 +61,7 @@ class ClipModel:
             text_embedding = text_embedding.half()
         return text_embedding
     
-    @staticmethod
-    def text_image_probabilities(image_embedding: torch.tensor, text_embeddings: torch.tensor) -> torch.tensor:
+    def text_image_probabilities(self, image_embedding: torch.tensor, text_embeddings: torch.tensor) -> torch.tensor:
         """
         Computes the probabilities of text descriptions matching an image.
 
@@ -75,12 +74,7 @@ class ClipModel:
         """
         # Compute the dot product between the image and text embeddings and apply softmax
         # to obtain matching probabilities
+        if self.half_precision:
+            image_embedding = image_embedding.to(torch.float32)
+            text_embeddings = text_embeddings.to(torch.float32)
         return (100.0 * image_embedding @ text_embeddings.T).softmax(dim=-1)
-
-
-if __name__ == "__main__":
-    model = ClipModel()
-
-    image_embedding = model.embed_image("CLIP.png")
-    text_embeddings = model.embed_text(["a diagram", "a dog", "a cat"])
-    print(model.text_image_probabilities(image_embedding, text_embeddings))
